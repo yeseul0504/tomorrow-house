@@ -1,0 +1,89 @@
+/* 컬럼갯수, 유닛사이즈,거터 사이즈
+* MOBILE ( <768px) 768px 보다 작은아이들에게 적용 -----------
+* fixture(별명) ------------ sm
+* # of columns ------------ 4
+* gutter ------------------ 20px
+* margin ------------------ 5px
+* conatiner-size ---------- 100% - (5px*2)
+*
+* TABLET ( >=768px) 768px 보다 이상인 아이들에게 적용 -----------
+* fixture(별명) ------------ md
+* # of columns ------------ 12
+* gutter ------------------ 20x
+* margin ------------------ 30px
+* conatiner-size ---------- 100% - (30px*2)
+* max-contianer-size ------ 960px
+*
+* DESKTOP ( >=1200px) 768px 보다 이상인 아이들에게 적용 -----------
+* fixture(별명) ------------ lg
+* # of columns ------------ 12
+* gutter ------------------ 20px
+* unit -------------------- 75px
+* margin ------------------ auto
+* conatiner-size ---------- 1140px
+* max-contianer-size ------ 1140px
+ */
+
+$gutter: 20px;
+
+$sm-columns: 4;
+$sm-margin: 5px;
+
+$md-breakpoint: 768px;
+$md-columns: 12;
+$md-margin: 30px;
+$md-max-container: 960px + $md-margin * 2;
+
+$lg-breakpoint: 1200px;
+$lg-columns: 12;
+$lg-unit: 75px;
+//                 (컬럼사이즈)
+$lg-max-container: ($lg-unit + $gutter) * $lg-columns;
+
+//확인 @debug ($lg-unit + $gutter) * $lg-columns;
+
+.container {
+  width: 100%;
+  padding: 0 $sm-margin;
+  //컨테이너가 항상 화면에 정중앙
+  margin: 0 auto;
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    //기본값이 nowrap이기때문에 wrap-> 컬럼이 4개를 넘겼을경우 변형시키지않고 다음줄로넘긴다.
+  }
+
+  //css 속성 선택자 (html속성을 찾아줌 ) ^= =으로 시작하는것 선택
+  [class^='col-'] {
+    padding: 0 $gutter / 2;
+  }
+
+  @for $i from 1 through $sm-columns {
+    .col-sm-#{$i} {
+      width: percentage($i / $sm-columns);
+    }
+  }
+
+  @media screen and (min-width: $md-breakpoint) {
+    max-width: $md-max-container;
+    padding: 0 $md-margin;
+
+    @for $i from 1 through $md-columns {
+      .col-md-#{$i} {
+        width: percentage($i / $md-columns);
+      }
+    }
+  }
+
+  @media screen and (min-width: $lg-breakpoint) {
+    max-width: $lg-max-container;
+    padding: 0;
+
+    @for $i from 1 through $lg-columns {
+      .col-lg-#{$i} {
+        width: ($lg-unit + $gutter) * $i;
+      }
+    }
+  }
+}
